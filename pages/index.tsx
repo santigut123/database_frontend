@@ -28,21 +28,42 @@ const app = initializeApp(firebaseConfig);
 console.log(app.name)
 // GRAB AUTHENTICATION TOKEN
 const auth = getAuth(app);
-export default function Home() {
-  const[SUOpened,setSUOpened] =useState(false);
-  const[SIOpened,setSIOpened] =useState(false);
-  console.log(setSUOpened)
+import { Auth, ThemeSupa } from '@supabase/auth-ui-react'
+
+import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
+
+
+
+const Home = () => {
+
+  const session = useSession()
+
+  const supabase = useSupabaseClient()
+
+
   return (
-     <div id="homePage">
-      <Flex gap="md" sx={{justifyContent:"center" ,flexDirection:"column"}}>
-        <Title order={1} >SURVEY RED</Title>
-        <SignInModal opened={SIOpened} setOpened={setSIOpened} auth={auth}/>
-        <SignUpModal opened={SUOpened} setOpened={setSUOpened} auth={auth}/>
+    <Stack  spacing="sm">
+       <Title>SURVEY RED</Title>
 
-        <Button onClick={()=>setSIOpened(true)}size="md" color="red" sx={{maxWidth:"500px"}}>Sign In</Button>
-        <Button onClick={()=>setSUOpened(true)}size="md" color="red"sx={{maxWidth:"500px"}}>Sign Up</Button>
-        
-      </Flex>
+     <Flex  sx={{ padding: '50px 0 100px 0' }}>
+     
 
-     </div>
-)}
+       {!session ? (
+
+         <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} theme="dark" />
+
+       ) : (
+          <Title>Test</Title>
+
+
+        )}
+
+    </Flex>
+    </Stack>
+
+  )
+
+}
+
+
+export default Home
