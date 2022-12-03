@@ -1,5 +1,5 @@
 import { AppShell,Navbar,Footer,Header,MediaQuery,Burger,Text,useMantineTheme,Button,Stack, Title} from "@mantine/core"
-import PageContent from "./pageContent";
+import PageContent from "../../components/pageContent";
 import { useState } from "react"
 function navbar(){
 
