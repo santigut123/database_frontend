@@ -40,7 +40,7 @@ const Home = () => {
      
 
        
-          <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} theme="dark" />
+      <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} theme="dark" />
       
        
 

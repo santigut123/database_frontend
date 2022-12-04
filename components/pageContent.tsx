@@ -1,6 +1,8 @@
 import { ReactElement } from "react"
 import {Flex,Text,Button,Stack} from "@mantine/core"
 import enlistedSurveys from "./enlistedSurveys"
+import surveyResults from "./surveyResults"
+import makeSurveyPage from "./makeSurvey"
 function surveyObject(){
     return {
         name:"",
@@ -14,36 +16,18 @@ function surveyObject(){
     }
 }
 
-function yourSurveys():ReactElement{
-    return <div>YS</div>
-
-}
-function makeSurvey():ReactElement{
-    return <div>MS</div>
-
-}
 function content(contentOption:string):ReactElement{
     if(contentOption==="Enlisted Surveys"){
         return enlistedSurveys()
     }
     else if(contentOption==="Survey Results"){
-        return yourSurveys()
+        return surveyResults()
     }
     else if(contentOption==="Make Survey"){
-        return makeSurvey()
+        return makeSurveyPage()
     }
     return <div></div>
 }
-
-
-
-
-
-
-
-
-
-
 
 export default function PageContent({contentOption}:any){
   return (

@@ -22,7 +22,7 @@ export default function Dashboard(){
         <Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
           <Stack>
           <Button onClick={()=>setContentOption("Enlisted Surveys")}>Enlisted Surveys</Button>
-          <Button onClick={()=>setContentOption("Your Surveys")}>Your Surveys</Button>
+          <Button onClick={()=>setContentOption("Survey Results")}>Your Surveys</Button>
           <Button onClick={()=>setContentOption("Make Survey")}>Make Survey</Button>
           </Stack>
         </Navbar>
