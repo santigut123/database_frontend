@@ -72,14 +72,17 @@ function ParticipantsDiv({setEmails,emails}:any):ReactElement{
     )
             }
 
-export default function makeSurveyPage(){
+export default function MakeSurveyPage(){
     const initialSurveyArr=Array<question>()
     const emailArr=Array<string>()
     const [emails,setEmails]=useState(emailArr)
     const [questions,setQuestions]=useState(initialSurveyArr)
+    const today= new Date()
+    const surveyInfo={"title":"","description":"","start_date":today.getDate(),"end_date":today.getDate}
+    
     console.log(questions)
     return(
-        <Stack>
+    <Stack key="makeSurvey">
             <Title>Make Survey</Title>
             <form>
               <TextInput label="Survey Title"></TextInput>

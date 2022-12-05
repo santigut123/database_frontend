@@ -33,10 +33,20 @@ function submitSurvey(router:any){
     router.push("/dashboard")
 
 }
+async function getResults(supabase,survey_id){
+    let { data, error } = await supabase
+    .rpc('getresults', {
+        survey_id
+    })
+
+    if (error) console.error(error)
+    return data
+
+}
 export default function yourSurvey() {
   const router = useRouter()
   const { id } = router.query
-  const results = Array<question>({question:"How was your day?",type:"one",result:""},{question:"What did you do today?",type:"two",result:""})
+  
   const [questions,setQuestions]=useState(results)
 
   console.log(questions)

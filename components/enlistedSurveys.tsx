@@ -8,14 +8,14 @@ import { useRouter } from 'next/router'
 function enlistedSurveyElement(surveyObject: any) {
     const router = useRouter()
     return (
-        <Flex id={surveyObject.survey_id}>
+        <Flex key={surveyObject.survey_id}>
             <Text>{surveyObject.title}</Text>
             <Button onClick={() => router.push(`/your_surveys/${surveyObject.survey_id}`)}>Take Survey</Button>
         </Flex>
     )
 }
 
-export default function enlistedSurveys():ReactElement {
+export default function EnlistedSurveys():ReactElement {
     
     const [surveys, setAssignedSurveys] = useState<any[]>([])
     useEffect(() => {
@@ -48,7 +48,7 @@ export default function enlistedSurveys():ReactElement {
     const supabase = useSupabaseClient()
     
     return (
-        <Stack>
+        <Stack key={"enlistedSurvey"}>
          {surveys.map((survey)=>enlistedSurveyElement(survey))}
         </Stack>
     )

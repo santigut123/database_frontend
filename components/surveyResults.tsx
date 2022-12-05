@@ -1,19 +1,52 @@
 import {Flex,Text,Button,Stack, Title} from "@mantine/core"
-import { ReactElement } from "react"
+import { useSupabaseClient } from "@supabase/auth-helpers-react"
+import { ReactElement,useEffect,useState} from "react"
+import {useRouter} from "next/router"
 function surveyResultElement(surveyObject: any){
+    const router= useRouter()
     return (
-        <Flex key={surveyObject.ID}>
-            <Text>{surveyObject.surveyName}</Text>
-            <Button >See Results</Button>
-        </Flex>
+        <Flex key={surveyObject.survey_id}>
+            <Text>{surveyObject.title}</Text>
+            <Button onClick={() => router.push(`/survey_results/${surveyObject.survey_id}`)}>See Results</Button>
+        </Flex> 
     )
 
 }
 
-export default function surveyResults():ReactElement{
-    const surveys=[{surveyName:"Survey 1",ID:"test123"},{surveyName:"Survey 2",ID:"test122"},{surveyName:"Survey 3",ID:"test121"}]
+export default function SurveyResults():ReactElement{
+
+    const [surveys,setSurveyResults]=useState<any[]>([])
+    const supabase = useSupabaseClient()
+    useEffect(() => {
+        async function getUserId(supabase:any) {
+        const { data: { user } } = await supabase.auth.getUser()
+        return user?.id
+        
+    }
+
+    async function getAssignedSurveys(supabase:any,setAssignedSurveys:any) {
+        const owner_id = await getUserId(supabase)
+        
+        let { data, error } = await supabase
+        .rpc('getownedsurveys', {
+            owner_id
+        })
+
+        if (error) console.error(error)
+        
+        if(data===null){
+            setAssignedSurveys([])
+        }
+        else{
+            setAssignedSurveys(data);
+        }
+
+    }
+
+        getAssignedSurveys(supabase,setSurveyResults);
+    })
     return (
-        <Stack>
+        <Stack key="surveyResults">
          {surveys.map((survey)=>surveyResultElement(survey))}
         </Stack>
 
