@@ -16,16 +16,16 @@ function enlistedSurveyElement(surveyObject: any) {
 }
 
 export default function enlistedSurveys():ReactElement {
+    
     const [surveys, setAssignedSurveys] = useState<any[]>([])
-    const supabase = useSupabaseClient()
-
-    async function getUserId() {
+    useEffect(() => {
+        async function getUserId(supabase:any) {
         const { data: { user } } = await supabase.auth.getUser()
         return user?.id
     }
 
-    async function getAssignedSurveys() {
-        const input_user_id = await getUserId()
+    async function getAssignedSurveys(supabase:any,setAssignedSurveys:any) {
+        const input_user_id = await getUserId(supabase)
 
         let { data, error } = await supabase
         .rpc('getassignedsurveys', {
@@ -33,14 +33,20 @@ export default function enlistedSurveys():ReactElement {
         })
 
         if (error) console.error(error)
+        if(data===null){
+            setAssignedSurveys([])
+        }
+        else{
+            setAssignedSurveys(data);
+        }
 
-        setAssignedSurveys(data);
     }
 
-    useEffect(() => {
-        getAssignedSurveys();
-    }, [])
-
+        getAssignedSurveys(supabase,setAssignedSurveys);
+    })
+    
+    const supabase = useSupabaseClient()
+    
     return (
         <Stack>
          {surveys.map((survey)=>enlistedSurveyElement(survey))}

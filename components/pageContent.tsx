@@ -8,9 +8,9 @@ function surveyObject(){
         name:"",
         description:"",
         ID:"",
-        questions:[],
-        responses:[],
-        participants:[],
+        questions:[]as any[],
+        responses:[] as any[],
+        participants:[] as any[],
         startDate:Date(),
         endDate:Date(),
     }
@@ -23,16 +23,15 @@ function content(contentOption:string):ReactElement{
     else if(contentOption==="Survey Results"){
         return surveyResults()
     }
-    else if(contentOption==="Make Survey"){
+    else{
         return makeSurveyPage()
     }
-    return <div></div>
 }
 
 export default function PageContent({contentOption}:any){
   return (
     <div>
-      <h1>{content(contentOption)}</h1>
+      {content(contentOption)}
     </div>
   )
 }

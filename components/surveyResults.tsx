@@ -2,9 +2,9 @@ import {Flex,Text,Button,Stack, Title} from "@mantine/core"
 import { ReactElement } from "react"
 function surveyResultElement(surveyObject: any){
     return (
-        <Flex id={surveyObject.ID}>
+        <Flex key={surveyObject.ID}>
             <Text>{surveyObject.surveyName}</Text>
-            <Button>See Results</Button>
+            <Button >See Results</Button>
         </Flex>
     )
 

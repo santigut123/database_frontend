@@ -9,7 +9,9 @@ function addQuestionTypeOne(questions:any,setQuestions: any){
 }
 function addQuestionTypeTwo(questions:any,setQuestions:any){
     setQuestions([...questions,{question:"",type:"two"}])
-    
+}
+function addParticipant(setEmails:any,emails:any,email:string){
+    setEmails([...emails,email])
 
 }
 function renderQuestion(question:any,index:any,setQuestions:any,questions:any):ReactElement{
@@ -46,9 +48,34 @@ interface question{
     type:string
 
 }
+function AddParticipantButton({setEmails,emails}:any):ReactElement{
+    const[participant,setParticipant]=useState("")
+    return( 
+        <Flex>
+          
+            <TextInput value ={participant} onChange={(event)=>setParticipant(event.currentTarget.value) } label="Participant Email"></TextInput>
+            <Button onClick={()=>addParticipant(setEmails,emails,participant)} >Add Participant</Button>
+        </Flex>
+    )
+
+}
+function ParticipantsDiv({setEmails,emails}:any):ReactElement{
+    return (
+        <Stack>
+              <Text>Participants</Text>
+            {emails.map((email:any,index:any)=>
+                <Flex key={index}>
+                    <Text>{email}</Text>
+                </Flex>
+            )}
+        </Stack>
+    )
+            }
 
 export default function makeSurveyPage(){
-    const initialSurveyArr=Array<question>
+    const initialSurveyArr=Array<question>()
+    const emailArr=Array<string>()
+    const [emails,setEmails]=useState(emailArr)
     const [questions,setQuestions]=useState(initialSurveyArr)
     console.log(questions)
     return(
@@ -60,9 +87,11 @@ export default function makeSurveyPage(){
               <DatePicker label="Start Date"></DatePicker>
               <DatePicker label="End Date"></DatePicker>
               <QuestionsDiv questions={questions} setQuestions={setQuestions}/>
+              <ParticipantsDiv emails={emails} setEmails={setEmails}/>
               <Flex sx={{margin:"20px",}}>
                 <Button sx={{margin:"20px"}} onClick={()=>addQuestionTypeOne(questions,setQuestions)}>Add Question Type 1</Button>
                 <Button sx={{margin:"20px"}} onClick={()=>addQuestionTypeTwo(questions,setQuestions)}>Add Question Type 2</Button>
+                <AddParticipantButton setEmails={setEmails}emails={emails}/>
               </Flex>
             </form>
 

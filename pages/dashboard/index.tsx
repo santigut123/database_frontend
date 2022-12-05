@@ -21,9 +21,9 @@ export default function Dashboard(){
       navbar={
         <Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
           <Stack>
-          <Button onClick={()=>setContentOption("Enlisted Surveys")}>Enlisted Surveys</Button>
-          <Button onClick={()=>setContentOption("Survey Results")}>Your Surveys</Button>
-          <Button onClick={()=>setContentOption("Make Survey")}>Make Survey</Button>
+          <Button key={"Enlisted Surveys"} onClick={()=>setContentOption("Enlisted Surveys")}>Enlisted Surveys</Button>
+          <Button key={"Survey Results"} onClick={()=>setContentOption("Survey Results")}>Survey Results</Button>
+          <Button key={"Make Survey"} onClick={()=>setContentOption("Make Survey")}>Make Survey</Button>
           </Stack>
         </Navbar>
       }
