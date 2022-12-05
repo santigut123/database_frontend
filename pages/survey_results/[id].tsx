@@ -13,18 +13,39 @@ interface question{
     results:string[]
 
 }
+function getAvgFromResults(results:string[]){
+    let total=0
+    for (let i=0;i<results.length;i++){
+        total+=parseInt(results[i])
+    }
+    return total/results.length
+}
+function getVarianceFromResults(results:string[]){
+    let avg=getAvgFromResults(results)     
+    let total=0
+    for (let i=0;i<results.length;i++){
+        total+=Math.pow(parseInt(results[i])-avg,2)
+    }
+    return total/results.length 
+}
+
 function renderQuestion(question:any,index:any,setQuestions:any,questions:any):ReactElement{
-    if (question.type==="two"){
+    if (question.type==="one"){
         return(
-        <Flex key={index}>
-                <Textarea onChange={(event)=>question.result=event.currentTarget.value} label={question.question}></Textarea>
-            </Flex>
+        <Stack key={index}>
+            <Text>Question(Type 1): {question.question}</Text>
+            <Text>Average:{getAvgFromResults(question.results)}</Text>
+            <Text>Variance:{getVarianceFromResults(question.results)}</Text>
+        </Stack>
         )
     }
     else{
-        return(<Flex key={index}>
-            <NativeSelect  data={['1','2','3','4','5'] } onChange={(event)=>question.result=event.currentTarget.value} label={question.question} description={"on a scale from 1-5"}></NativeSelect>
-        </Flex>)
+        return(
+        <Stack key={index}>
+            <Text>Question (Type 2): {question.question}</Text>
+            <Text>Results:</Text>
+            {question.results.map((result:any,index:any)=><Text key={index}>{result}</Text>)}
+        </Stack>)
 
     }
    
@@ -36,7 +57,7 @@ function submitSurvey(router:any){
 export default function yourSurvey() {
   const router = useRouter()
   const { id } = router.query
-  const results = Array<question>({question:"How was your day?",type:"two",results:["bad","good","somewhat goodS"]},{question:"What did you do today in numbers?",type:"two",results:["1","2","3","4","5"]})
+  const results = Array<question>({question:"How was your day?",type:"two",results:["bad","good","somewhat good"]},{question:"What did you do today in numbers?",type:"one",results:["1","2","3","4","5"]})
   const [questions,setQuestions]=useState(results)
 
   console.log(questions)
