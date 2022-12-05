@@ -10,7 +10,7 @@ function enlistedSurveyElement(surveyObject: any) {
     return (
         <Flex id={surveyObject.survey_id}>
             <Text>{surveyObject.title}</Text>
-            <Button onClick={() => router.push(`/${surveyObject.survey_id}`)}>Take Survey</Button>
+            <Button onClick={() => router.push(`/your_surveys/${surveyObject.survey_id}`)}>Take Survey</Button>
         </Flex>
     )
 }
