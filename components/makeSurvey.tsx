@@ -17,7 +17,7 @@ function addParticipant(setEmails:any,emails:any,email:string){
 
 }
 function renderQuestion(question:any,index:any,setQuestions:any,questions:any):ReactElement{
-    if (question.type==="one"){
+    if (question.type===1){
         return(
         <Flex key={index}>
                 <Textarea  onChange={(event)=>question.question=event.currentTarget.value} label="Question (Type 1 Rating 1-5)"></Textarea>
@@ -73,32 +73,41 @@ function ParticipantsDiv({setEmails,emails}:any):ReactElement{
         </Stack>
     )
             }
-async function submitSurvey(userId:any, info:any,questions:any,emails:any,start_date:any,end_date:any,supabase:any){
+async function submitSurvey(title:any,description:any,questions:any,emails:any,start_date:any,end_date:any,supabase:any){
+    const { data: { user } } = await supabase.auth.getUser()
+    const userID=user.id 
+    console.log(userID)
     let addSurvResp = await supabase.rpc('addsurvey',{
-        new_title:info.title,
-        new_description:info.description,
+        new_title:title,
+        new_description:description,
         new_start_date:start_date,
         new_end_date:end_date,
-        new_creator_id:userId,
+        new_creator_id:userID,
 
 }
     )
+    console.log("NEW SURVEY ID",addSurvResp.data);
+    console.log("ERROR GETTING SURVEY ID",addSurvResp.error);
+    
     for(let i=0;i<questions.length;i++){
         let {data,error} = await supabase.rpc('addquestiontosurvey',{
             input_type:questions[i].type,
             input_survey_id:addSurvResp.data,
             input_question:questions[i].question
         })
+        console.log("ADD QUESTION TO SURVEY",error);
         
     }
     for(let i=0;i<emails.length;i++){
         let idRes = await supabase.rpc('getidfromemail',{
             input_email:emails[i]
         })
+        console.log(idRes.error);
         let {data,error} = await supabase.rpc('assignusertosurvey',{
             input_user_id:idRes.data,
             input_survey_id:addSurvResp.data
         })
+        console.log("ERROR ASSIGNING USERS",error);
     }
 
 }
@@ -110,25 +119,21 @@ export default function MakeSurveyPage(){
     const [emails,setEmails]=useState(emailArr)
     const [questions,setQuestions]=useState(initialSurveyArr)
     const today= new Date()
+    const[title,setTitle]=useState("")
+    const[description,setDescription]=useState("")
     const[start_date,setStart_date] = useState(new Date())
     const[end_date,setEnd_date] = useState(new Date())
-    let userID =""
-    const surveyInfo={"title":"","description":"","start_date":today.getDate(),"end_date":today.getDate}    
-    console.log(questions)
-    useEffect(()=>{
-        async function getUserId(supabase:any,userID:any) {
-    const { data: { user } } = await supabase.auth.getUser()
-    userID=user
-}
 
-   getUserId(supabase,userID)
-},[])
+
+ 
+    
+
     return(
     <Stack key="makeSurvey">
             <Title>Make Survey</Title>
             <form>
-              <TextInput onChange={(event)=>surveyInfo.title=event.currentTarget.value} label="Survey Title"></TextInput>
-              <Textarea onChange={(event)=>surveyInfo.description=event.currentTarget.value} label="Survey Description"></Textarea>
+              <TextInput value={title} onChange={(event)=>setTitle(event.currentTarget.value)} label="Survey Title"></TextInput>
+              <Textarea value={description} onChange={(event)=>setDescription(event.currentTarget.value)} label="Survey Description"></Textarea>
               <DatePicker value={start_date} onChange={setStart_date} label="Start Date"/>
               <DatePicker value={end_date} onChange={setEnd_date} label="End Date"/>
               <QuestionsDiv questions={questions} setQuestions={setQuestions}/>
@@ -139,7 +144,7 @@ export default function MakeSurveyPage(){
                 <AddParticipantButton setEmails={setEmails}emails={emails}/>
                 
               </Flex>
-              <Button onClick={()=>submitSurvey(userID,surveyInfo,questions,emails,start_date,end_date,supabase)}>Make Survey</Button>
+              <Button onClick={()=>submitSurvey(title,description,questions,emails,start_date,end_date,supabase)}>Make Survey</Button>
             </form>
 
         </Stack>
