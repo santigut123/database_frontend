@@ -101,13 +101,7 @@ export default function yourSurvey() {
     
 }
 setQuestions(data)
-
-
-  console.log("ANSWERS",data)
-  console.log("ERROR",error)
-      
- }
- getQuestions()
+ 
  
 
  

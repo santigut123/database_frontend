@@ -43,7 +43,7 @@ export default function EnlistedSurveys():ReactElement {
     }
 
         getAssignedSurveys(supabase,setAssignedSurveys);
-    })
+    },[])
     
     const supabase = useSupabaseClient()
     
